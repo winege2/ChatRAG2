@@ -13,7 +13,7 @@ function MenuIcon() {
       <path
         d="M4 7h16M4 12h16M4 17h16"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.75"
         strokeLinecap="round"
       />
     </svg>
@@ -26,7 +26,7 @@ function CloseIcon() {
       <path
         d="M6 6l12 12M18 6L6 18"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.75"
         strokeLinecap="round"
       />
     </svg>
@@ -35,9 +35,15 @@ function CloseIcon() {
 
 function DocumentStackIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
-        d="M9 12h6M9 16h6M7 4h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z"
+        d="M14 4h-4a2 2 0 00-2 2v14a2 2 0 002 2h8a2 2 0 002-2V9l-5-5z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14 4v5h5M9 13h6M9 17h4"
         stroke="currentColor"
         strokeWidth="1.75"
         strokeLinecap="round"
@@ -68,29 +74,34 @@ export function AppShell({
         <button
           type="button"
           aria-label="Close menu"
-          className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-[2px] lg:hidden"
+          className="fixed inset-0 z-40 bg-[#141c26]/50 lg:hidden"
           onClick={closeNav}
         />
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-[var(--sidebar-width)] flex-col border-r border-border bg-surface shadow-xl transition-transform duration-200 ease-out lg:static lg:z-auto lg:translate-x-0 lg:shadow-none ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-[var(--sidebar-width)] flex-col border-r border-border bg-surface-muted transition-transform duration-200 ease-out lg:static lg:z-auto lg:translate-x-0 ${
           navOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-4">
+        <div className="flex items-center justify-between gap-3 px-5 pt-5 pb-4">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
+            <div
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-white"
+              aria-hidden="true"
+            >
               <DocumentStackIcon />
             </div>
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-foreground">ChatRAG</p>
-              <p className="truncate text-xs text-muted">Company documents</p>
+              <p className="truncate text-[0.9375rem] font-semibold tracking-tight text-foreground">
+                ChatRAG
+              </p>
+              <p className="truncate text-[0.8125rem] text-muted">Company documents</p>
             </div>
           </div>
           <button
             type="button"
-            className="rounded-lg p-2 text-muted-foreground hover:bg-slate-100 lg:hidden"
+            className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-surface hover:text-foreground lg:hidden"
             aria-label="Close sidebar"
             onClick={closeNav}
           >
@@ -98,59 +109,64 @@ export function AppShell({
           </button>
         </div>
 
-        <div className="p-3">
+        <div className="px-4 pb-3">
           <Link
             href="/"
             onClick={closeNav}
-            className="flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[var(--primary-hover)]"
+            className="flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-[0.875rem] font-medium text-white transition-colors hover:bg-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
-            <span className="text-lg leading-none" aria-hidden="true">+</span>
+            <span className="text-base leading-none" aria-hidden="true">+</span>
             New chat
           </Link>
         </div>
 
-        <nav className="flex-1 space-y-0.5 overflow-y-auto px-2 pb-4" aria-label="Past chats">
+        <nav className="flex-1 overflow-y-auto px-3 pb-5" aria-label="Past chats">
           {sessions.length === 0 ? (
-            <p className="px-3 py-2 text-xs leading-relaxed text-muted">No conversations yet.</p>
+            <p className="px-2 py-1 text-[0.8125rem] leading-relaxed text-muted">
+              Start a chat to see it here.
+            </p>
           ) : (
-            sessions.map((s) => {
-              const active = s.id === sessionId;
-              return (
-                <Link
-                  key={s.id}
-                  href={`/?session=${s.id}`}
-                  onClick={closeNav}
-                  className={`block truncate rounded-lg px-3 py-2.5 text-sm transition-colors ${
-                    active
-                      ? "bg-primary-soft font-medium text-primary"
-                      : "text-muted-foreground hover:bg-slate-100 hover:text-foreground"
-                  }`}
-                  title={s.name}
-                >
-                  {s.name}
-                </Link>
-              );
-            })
+            <ul className="space-y-0.5">
+              {sessions.map((s) => {
+                const active = s.id === sessionId;
+                return (
+                  <li key={s.id}>
+                    <Link
+                      href={`/?session=${s.id}`}
+                      onClick={closeNav}
+                      className={`block truncate rounded-md px-2.5 py-2 text-[0.875rem] leading-snug transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary ${
+                        active
+                          ? "bg-primary-soft font-medium text-primary"
+                          : "text-muted-foreground hover:bg-surface hover:text-foreground"
+                      }`}
+                      title={s.name}
+                    >
+                      {s.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           )}
         </nav>
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex shrink-0 items-center gap-3 border-b border-border bg-surface/80 px-4 py-3 backdrop-blur-sm lg:px-6">
+      <div className="flex min-w-0 flex-1 flex-col bg-surface">
+        <header className="flex shrink-0 items-center gap-3 border-b border-border px-4 py-3.5 lg:px-8">
           <button
             type="button"
-            className="rounded-lg border border-border p-2 text-muted-foreground transition-colors hover:bg-slate-50 lg:hidden"
+            className="rounded-md border border-border bg-surface-muted p-2 text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground lg:hidden"
             aria-label="Open menu"
             onClick={() => setNavOpen(true)}
           >
             <MenuIcon />
           </button>
           <div className="min-w-0 flex-1">
-            <h1 className="truncate text-sm font-semibold text-foreground sm:text-base">
+            <h1 className="truncate text-[0.9375rem] font-semibold text-foreground sm:text-base">
               Document assistant
             </h1>
-            <p className="hidden truncate text-xs text-muted sm:block">
-              Answers grounded in your organization&apos;s knowledge base
+            <p className="hidden truncate text-[0.8125rem] text-muted sm:block">
+              Answers from your organization&apos;s knowledge base
             </p>
           </div>
         </header>

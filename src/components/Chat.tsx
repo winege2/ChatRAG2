@@ -7,7 +7,7 @@ import type { Message } from "@/lib/ragflow";
 function UserAvatar() {
   return (
     <div
-      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-white"
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-[0.6875rem] font-semibold text-white"
       aria-hidden="true"
     >
       You
@@ -18,12 +18,12 @@ function UserAvatar() {
 function AssistantAvatar() {
   return (
     <div
-      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-primary"
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-surface-muted text-primary"
       aria-hidden="true"
     >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
         <path
-          d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3zM5 17l.8 2.4L8 20l-2.2.6L5 23l-.8-2.4L2 20l2.2-.6L5 17zm14 0l.8 2.4L22 20l-2.2.6L19 23l-.8-2.4L16 20l2.2-.6L19 17z"
+          d="M12 3l1.2 3.6L17 8l-3.8 1.2L12 13l-1.2-3.8L7 8l3.8-1.2L12 3zM4 18l.7 2.1L7 21l-1.9.5L4 24l-.7-2.1L1 21l1.9-.5L4 18zm16 0l.7 2.1L23 21l-1.9.5L20 24l-.7-2.1L17 21l1.9-.5L20 18z"
           fill="currentColor"
         />
       </svg>
@@ -33,13 +33,17 @@ function AssistantAvatar() {
 
 function ThinkingIndicator() {
   return (
-    <div className="message-in flex gap-3 px-4 sm:px-6">
+    <div className="flex gap-3 px-4 lg:px-8">
       <AssistantAvatar />
-      <div className="rounded-2xl rounded-tl-md border border-border bg-surface px-4 py-3 shadow-sm">
-        <div className="flex items-center gap-1.5" role="status" aria-label="Thinking">
-          <span className="thinking-dot h-2 w-2 rounded-full bg-slate-400" />
-          <span className="thinking-dot h-2 w-2 rounded-full bg-slate-400" />
-          <span className="thinking-dot h-2 w-2 rounded-full bg-slate-400" />
+      <div
+        className="rounded-xl border border-border bg-surface-muted px-4 py-3"
+        role="status"
+        aria-label="Thinking"
+      >
+        <div className="flex items-center gap-1.5">
+          <span className="thinking-dot h-1.5 w-1.5 rounded-full bg-[var(--accent-muted)]" />
+          <span className="thinking-dot h-1.5 w-1.5 rounded-full bg-[var(--accent-muted)]" />
+          <span className="thinking-dot h-1.5 w-1.5 rounded-full bg-[var(--accent-muted)]" />
         </div>
       </div>
     </div>
@@ -48,11 +52,20 @@ function ThinkingIndicator() {
 
 function EmptyState() {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center">
-      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-soft text-primary">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <div className="flex flex-1 flex-col items-center justify-center px-6 py-16 text-center">
+      <div
+        className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-surface-muted text-primary"
+        aria-hidden="true"
+      >
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
           <path
-            d="M9 12h6M9 16h6M7 4h7l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z"
+            d="M14 4h-4a2 2 0 00-2 2v14a2 2 0 002 2h8a2 2 0 002-2V9l-5-5z"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M14 4v5h5M9 13h6M9 17h4"
             stroke="currentColor"
             strokeWidth="1.75"
             strokeLinecap="round"
@@ -60,8 +73,10 @@ function EmptyState() {
           />
         </svg>
       </div>
-      <h2 className="text-lg font-semibold text-foreground">Ask about your documents</h2>
-      <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted">
+      <h2 className="max-w-[18rem] text-lg font-semibold tracking-tight text-foreground sm:max-w-none">
+        Ask about your documents
+      </h2>
+      <p className="mt-3 max-w-md text-[0.9375rem] leading-[1.6] text-muted">
         Type a question below. ChatRAG searches your company&apos;s knowledge base and returns an
         answer with context from approved sources.
       </p>
@@ -102,25 +117,22 @@ export function Chat({ sessionId, history }: { sessionId?: string; history: Mess
   const hasMessages = messages.length > 0;
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col bg-[linear-gradient(180deg,#f8fafc_0%,#f1f5f9_100%)]">
+    <div className="flex min-h-0 flex-1 flex-col bg-surface">
       <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
         {!hasMessages && !waiting ? (
           <EmptyState />
         ) : (
-          <div className="mx-auto w-full max-w-3xl space-y-6 px-4 py-6 sm:px-6">
+          <div className="mx-auto w-full max-w-[42rem] space-y-8 px-4 py-8 lg:px-8">
             {messages.map((message, i) => {
               const isUser = message.role === "user";
               return (
-                <div
-                  key={i}
-                  className={`message-in flex gap-3 ${isUser ? "flex-row-reverse" : ""}`}
-                >
+                <div key={i} className={`flex gap-3 ${isUser ? "flex-row-reverse" : ""}`}>
                   {isUser ? <UserAvatar /> : <AssistantAvatar />}
                   <div
-                    className={`max-w-[min(100%,42rem)] whitespace-pre-wrap rounded-2xl px-4 py-3 text-[0.9375rem] leading-relaxed shadow-sm ${
+                    className={`max-w-[min(100%,36rem)] whitespace-pre-wrap text-[0.9375rem] leading-[1.65] ${
                       isUser
-                        ? "rounded-tr-md bg-primary text-white"
-                        : "rounded-tl-md border border-border bg-surface text-foreground"
+                        ? "rounded-2xl rounded-tr-sm bg-primary px-4 py-3 text-white"
+                        : "border-l-2 border-primary/35 py-0.5 pl-4 text-foreground"
                     }`}
                   >
                     {message.content}
@@ -136,9 +148,9 @@ export function Chat({ sessionId, history }: { sessionId?: string; history: Mess
 
       <form
         onSubmit={send}
-        className="shrink-0 border-t border-border bg-surface/95 px-4 py-4 backdrop-blur-sm pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6"
+        className="shrink-0 border-t border-border bg-surface-muted/80 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] lg:px-8"
       >
-        <div className="mx-auto flex max-w-3xl gap-2 sm:gap-3">
+        <div className="mx-auto flex max-w-[42rem] gap-2 sm:gap-3">
           <label className="sr-only" htmlFor="chat-question">Question</label>
           <input
             id="chat-question"
@@ -146,12 +158,12 @@ export function Chat({ sessionId, history }: { sessionId?: string; history: Mess
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="Ask a question about your documents..."
             aria-label="Question"
-            className="min-h-11 flex-1 rounded-xl border border-border-strong bg-surface px-4 py-2.5 text-[0.9375rem] text-foreground shadow-sm outline-none transition-[box-shadow,border-color] placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className="min-h-11 flex-1 rounded-lg border border-border-strong bg-surface px-4 py-2.5 text-[0.9375rem] text-foreground outline-none transition-[border-color,box-shadow] placeholder:text-muted focus:border-primary focus:ring-[3px] focus:ring-primary/15"
           />
           <button
             type="submit"
             disabled={!question || waiting}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[var(--primary-hover)] disabled:cursor-not-allowed disabled:opacity-50 sm:min-w-[5.5rem]"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-[0.875rem] font-medium text-white transition-colors hover:bg-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-45 sm:min-w-[5.25rem]"
           >
             <span className="hidden sm:inline">Send</span>
             <svg className="sm:hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
